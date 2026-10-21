@@ -1,0 +1,10 @@
+{
+  "location": "{\"lat\":\"35.6812\",\"lng\":\"139.7671\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Tokyo\"}",
+  "temp_unit": "C",
+  "show_today": "true",
+  "show_tomorrow": "true",
+  "show_hourly": "true",
+  "show_week": "true",
+  "show_sun": "true",
+  "text_size": "standard"
+}

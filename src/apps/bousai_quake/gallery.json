@@ -1,0 +1,4 @@
+[
+  {"name":"noto-sample","caption":"Sample pages for the 2024 Noto Peninsula M7.6, Int 7 earthquake","config":{"demo":"true"}},
+  {"name":"noto-mono","caption":"Sample quake in the monochrome palette with bold text","config":{"demo":"true","palette":"mono","text_weight":"bold"}}
+]

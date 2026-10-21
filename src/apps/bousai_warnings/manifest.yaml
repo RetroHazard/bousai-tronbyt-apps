@@ -1,0 +1,10 @@
+---
+id: bousai-warnings
+name: Bousai Warnings
+summary: JMA weather warnings
+desc: Japan weather advisories, warnings, urgent and emergency warnings (Lv2-Lv5) from JMA for your location and saved places, with landslide, river flood, tornado watch and record heavy rain notices. Enable Tronbyt AutoPin together with Alert only so an active warning takes over the display.
+author: Bousai Apps
+category: weather
+fileName: bousai_warnings.star
+packageName: bousai_warnings
+recommendedInterval: 1

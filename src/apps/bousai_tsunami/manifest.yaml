@@ -1,0 +1,10 @@
+---
+id: bousai-tsunami
+name: Bousai Tsunami
+summary: JMA tsunami warnings
+desc: Tsunami warnings, advisories and forecasts from the Japan Meteorological Agency with the highest grade in effect, the coast nearest you with expected arrival time and height, a map of Japan with warned coasts coloured by grade, the other warned regions, tide-gauge and offshore observations and tide times. The app skips itself while nothing is in effect, so enable Tronbyt AutoPin to let a tsunami warning take over the display. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_tsunami.star
+packageName: bousai_tsunami
+recommendedInterval: 1

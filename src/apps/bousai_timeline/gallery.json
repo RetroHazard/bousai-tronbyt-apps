@@ -1,0 +1,4 @@
+[
+  {"name": "sample", "caption": "Sample timeline of a typhoon night modelled on Typhoon Hagibis (2019): warnings, notices, quake, EEW, tsunami, volcano and typhoon rows", "config": {"demo": "true"}},
+  {"name": "light-bold", "caption": "Light theme with bold text", "config": {"demo": "true", "theme": "light", "text_weight": "bold"}}
+]

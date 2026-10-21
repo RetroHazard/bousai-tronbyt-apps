@@ -1,0 +1,6 @@
+{
+  "demo": "true",
+  "location": "{\"lat\":\"35.6812\",\"lng\":\"139.7671\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Tokyo\"}",
+  "min_level": "1",
+  "text_size": "standard"
+}

@@ -1,0 +1,10 @@
+---
+id: bousai-radar
+name: Bousai Rain Radar
+summary: JMA rain radar and outlook
+desc: Animated rain radar from the Japan Meteorological Agency around your location. It shows the last hour of observed radar, a one-hour nowcast and an hourly outlook up to 15 hours ahead, each frame with a time label, followed by the nearest AMeDAS rain readings as text and an optional colour key in mm/h. Map colours come from JMA and cannot be recoloured; theme, colour vision, contrast and text size apply to labels, the key, the location marker and status text.
+author: Bousai Apps
+category: weather
+fileName: bousai_radar.star
+packageName: bousai_radar
+recommendedInterval: 5

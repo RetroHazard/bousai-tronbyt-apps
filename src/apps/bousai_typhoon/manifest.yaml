@@ -1,0 +1,10 @@
+---
+id: bousai-typhoon
+name: Bousai Typhoon Tracker
+summary: JMA typhoon track and forecast
+desc: Typhoon analysis and 5-day forecast from the Japan Meteorological Agency - number and name, category, central pressure, maximum wind and gusts, movement, position and distance from you - with the past track, forecast centres and probability circles on a Pacific map, one frame per forecast day. Several typhoons cycle nearest first. The app skips itself while no typhoon is active unless Show when idle is on. Typhoons stay active for days, so AutoPin is not recommended for this app. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_typhoon.star
+packageName: bousai_typhoon
+recommendedInterval: 10

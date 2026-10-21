@@ -1,0 +1,4 @@
+[
+  {"name":"priority-sample","caption":"Sample Home cards ordered by alert priority","config":{"demo":"true"}},
+  {"name":"priority-tritan","caption":"Sample Home cards with the tritanopia palette and bold text","config":{"demo":"true","palette":"tritan","text_weight":"bold"}}
+]

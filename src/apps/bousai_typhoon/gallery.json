@@ -1,0 +1,4 @@
+[
+  {"name": "sample", "caption": "Sample modelled on Typhoon No. 10 (Shanshan) of August 2024: identity card, details and the forecast track map", "config": {"demo": "true"}},
+  {"name": "tritan-knots", "caption": "Blue-yellow colour-vision palette, wind in knots, every JMA forecast time on the map", "config": {"demo": "true", "palette": "tritan", "wind_unit": "kt", "steps": "all", "location": "{\"lat\":\"33.59\",\"lng\":\"130.402\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Fukuoka\"}"}}
+]

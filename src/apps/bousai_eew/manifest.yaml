@@ -1,0 +1,10 @@
+---
+id: bousai-eew
+name: Bousai EEW
+summary: Earthquake early warning
+desc: Japan Meteorological Agency Earthquake Early Warning as Forecast or Warning with report number, epicentre, magnitude, depth and maximum expected intensity, plus an unofficial estimated intensity and S-wave countdown for your location (counted from the moment the server renders the app). Several simultaneous alerts are shown in turn; with Show when idle off the app hides until an alert arrives. Enable Tronbyt Autopin and set Render Interval Minutes to 0 (re-render every time the app is checked) so an alert takes over the display and the countdown stays fresh. Sources are the JMA EEW relayed by Wolfx, the NIED Kyoshin Monitor and P2PQuake; this is not official warning equipment.
+author: Bousai Apps
+category: weather
+fileName: bousai_eew.star
+packageName: bousai_eew
+recommendedInterval: 0

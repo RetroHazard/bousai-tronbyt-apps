@@ -1,0 +1,10 @@
+---
+id: bousai-shake
+name: Bousai Shake Monitor
+summary: Live shaking monitor
+desc: Live ground shaking from the NIED Kyoshin Monitor stations across Japan (K-NET and KiK-net), as the whole country or a window around your location with your position marked. While an earthquake early warning is active it overlays the NIED estimated-intensity map and P and S wave circles and shows the warning with an S-wave countdown. P2PQuake user shaking reports add a Shaking detected state with a confidence level. Optionally hides until an EEW or shaking report appears; enable Tronbyt AutoPin so it takes over the display. Maps are NIED images for personal use; dot colours follow the NIED scale (blue quiet, red strong).
+author: Bousai Apps
+category: science
+fileName: bousai_shake.star
+packageName: bousai_shake
+recommendedInterval: 1

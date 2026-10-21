@@ -1,0 +1,10 @@
+---
+id: bousai-snow
+name: Bousai Snow
+summary: JMA snow depth and snowfall
+desc: JMA analysed snow depth and short-term snowfall forecast on a 5 km grid around your location. Animate the last six hours and the next six hours of snow depth or of 3, 6, 12 or 24 hour snowfall, each frame with a time label, with nearby AMeDAS snow gauge readings as text and a colour key in centimetres. Map colours come from JMA and cannot be recoloured; theme, colour vision, contrast and text size apply to labels, the key, the location marker and status text. Outside the snow season the map is empty and says so.
+author: Bousai Apps
+category: weather
+fileName: bousai_snow.star
+packageName: bousai_snow
+recommendedInterval: 15

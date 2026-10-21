@@ -1,0 +1,10 @@
+---
+id: bousai-tornado
+name: Bousai Tornado Watch
+summary: JMA tornado probability nowcast
+desc: JMA Tornado Nowcast around your location. Animated tornado probability levels 1 and 2 on a 10 km grid for the last 30 minutes and the next hour, each frame with a time label, a text status that says whether any risk is in your region, and a key with the hit rates JMA publishes for each level. Map colours come from JMA and cannot be recoloured; theme, colour vision, contrast and text size apply to labels, the key, the location marker and status text. With Only when active the app hides itself while the map is empty; enable Tronbyt AutoPin so a risk takes over the display when it appears.
+author: Bousai Apps
+category: weather
+fileName: bousai_tornado.star
+packageName: bousai_tornado
+recommendedInterval: 5

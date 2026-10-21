@@ -1,0 +1,45 @@
+Bousai — Japan weather and disaster information for Tronbyt
+Copyright 2026 Bousai contributors
+
+Project software and original documentation are licensed under the Apache License,
+Version 2.0. See LICENSE. This notice does not change that license or grant rights
+in third-party data, imagery or trademarks.
+
+Japan Meteorological Agency (JMA)
+  出典：気象庁ホームページ
+  https://www.jma.go.jp/jma/kishou/info/coment.html
+  JMA data, English dictionaries, geographic reference data and map products are
+  processed, translated, selected and reduced for the display. Bousai output is
+  not an official JMA product. JMA attribution applies to derived previews too.
+
+National Research Institute for Earth Science and Disaster Resilience (NIED)
+  Kyoshin Monitor / K-NET / KiK-net
+  https://www.kyoshin.bosai.go.jp/ja/about_kmoni/
+  Runtime content remains subject to NIED's terms, including restrictions on
+  copying, modification, transmission and redistribution outside private use or
+  statutory exceptions. NIED imagery is not distributed in this repository;
+  Shake's public preview is an original information-only illustration.
+
+Wolfx
+  Relayed JMA Earthquake Early Warning data
+  https://api.wolfx.jp/
+  Runtime data is subject to the provider's current terms.
+
+P2PQuake
+  EEW history and volunteer shaking reports
+  https://www.p2pquake.net/
+  https://api.p2pquake.net/
+  Runtime data is subject to the provider's current terms.
+
+Natural Earth
+  https://www.naturalearthdata.com/about/terms-of-use/
+  Public-domain land outlines are used to generate embedded overview basemaps.
+
+Pixlet / Tronbyt
+  https://github.com/tronbyt/pixlet
+  https://github.com/tronbyt/server
+  Runtime dependencies are separate projects, not included binaries.
+
+Bousai is not affiliated with or endorsed by JMA, NIED or Gehirn Inc. NERV is
+mentioned only for feature comparison; no NERV logo, artwork or code is included.
+Upstream providers' trademarks and rights remain with their respective owners.

@@ -1,0 +1,10 @@
+---
+id: bousai-quake
+name: Bousai Quake
+summary: Japan earthquake information
+desc: Latest earthquakes in Japan from the Japan Meteorological Agency with maximum seismic intensity, magnitude, depth, an epicenter map with your location, the shaking reported where you are, JMA's tsunami comment and the estimated intensity distribution of strong quakes. Shows Nankai Trough and Hokkaido-Sanriku special information when issued. Enable Tronbyt AutoPin with Only recent quakes so a new quake takes over the display. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: science
+fileName: bousai_quake.star
+packageName: bousai_quake
+recommendedInterval: 5

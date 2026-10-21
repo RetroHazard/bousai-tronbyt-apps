@@ -1,0 +1,4 @@
+[
+  {"name": "sample", "caption": "Sample heavy-rain event: Lv4 warnings, record short-term heavy rain, river flood notice and a saved place", "config": {"demo": "true"}},
+  {"name": "lv4-contrast", "caption": "Lv4 and above only, high contrast, large bold text", "config": {"demo": "true", "min_level": "40", "contrast": "high", "text_size": "large", "text_weight": "bold"}}
+]

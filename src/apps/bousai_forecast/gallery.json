@@ -1,0 +1,22 @@
+[
+  {
+    "name": "forecast",
+    "caption": "JMA forecast with rain chance, 3-hourly outlook, weekly forecast and sunrise/sunset for Izu",
+    "config": {
+      "location": "{\"lat\":\"34.9\",\"lng\":\"138.925\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Izu\"}",
+      "show_rain": "true",
+      "show_text": "true"
+    }
+  },
+  {
+    "name": "large-light",
+    "caption": "Large bold Fahrenheit forecast in the light theme",
+    "config": {
+      "location": "{\"lat\":\"34.9\",\"lng\":\"138.925\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Izu\"}",
+      "theme": "light",
+      "text_size": "large",
+      "text_weight": "bold",
+      "temp_unit": "F"
+    }
+  }
+]

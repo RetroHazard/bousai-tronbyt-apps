@@ -1,0 +1,10 @@
+---
+id: bousai-risk
+name: Bousai Risk Map
+summary: JMA Kikikuru hazard risk map
+desc: JMA risk maps (Kikikuru) for landslide, inundation and flood risk caused by heavy rain around your location. Level 2 to Level 5 areas are drawn in JMA's colours with a text key that names every level, optionally animated over the last hour, with a text status that says whether any Lv2 or higher area is in your region. The flood layer uses JMA's river mesh. Map colours come from JMA and cannot be recoloured; theme, colour vision, contrast and text size apply to labels, the key, the location marker and status text. With Only when active the app hides itself while the map is clear; enable Tronbyt AutoPin so a risk takes over the display when it appears.
+author: Bousai Apps
+category: weather
+fileName: bousai_risk.star
+packageName: bousai_risk
+recommendedInterval: 10

@@ -1,0 +1,4 @@
+[
+  {"name":"noto-sample","caption":"Sample Major Tsunami Warning based on the 2024 Noto Peninsula event","config":{"demo":"true"}},
+  {"name":"large-light","caption":"Sample tsunami status with large bold text in the light theme","config":{"demo":"true","theme":"light","text_size":"large","text_weight":"bold"}}
+]

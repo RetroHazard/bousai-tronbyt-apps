@@ -1,0 +1,10 @@
+---
+id: bousai-home
+name: Bousai Home
+summary: Prioritised alerts and weather
+desc: One information panel for your location. It gathers earthquake early warnings with an S-wave countdown, tsunami, weather warnings, landslide and river flood notices, tornado watch and record heavy rain, volcano alert levels and eruption flashes, recent earthquakes, Nankai Trough and Hokkaido-Sanriku information, nearby typhoons and optional shaking detection from the Japan Meteorological Agency, and sorts everything by severity, urgency class and age, the most urgent card first, with your location and the number of active alerts in the header. Weather, today's forecast with sunrise and sunset, and the last felt quake fill the time the alerts leave, and fill the panel with No warnings when all is calm. Every source can be switched off. Turn on Only show alerts and enable Tronbyt AutoPin, with the update interval at 1 minute, so the panel appears only when something reaches your alert level and then takes over the display. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_home.star
+packageName: bousai_home
+recommendedInterval: 1

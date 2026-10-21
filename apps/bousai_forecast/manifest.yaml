@@ -1,0 +1,10 @@
+---
+id: bousai-forecast
+name: Bousai Weather Forecast
+summary: JMA forecast and sun times
+desc: Weather forecast for Japan from the Japan Meteorological Agency. Shows today and tomorrow with high and low compared with the previous day, chance of rain per six hours, a 3-hourly forecast, a 7-day outlook, sunrise and sunset, plus plain-sentence and official English text. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_forecast.star
+packageName: bousai_forecast
+recommendedInterval: 15

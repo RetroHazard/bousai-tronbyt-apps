@@ -1,0 +1,3 @@
+[
+  {"name":"hokkaido-depth","caption":"Snow-depth map around Hokkaido at regional zoom with protanopia/deuteranopia label settings","config":{"location":"{\"lat\":\"43.0621\",\"lng\":\"141.3544\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Sapporo\"}","zoom":"region","element":"snowd","palette":"protan"}}
+]

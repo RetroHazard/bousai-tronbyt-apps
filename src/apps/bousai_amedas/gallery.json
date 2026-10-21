@@ -1,0 +1,24 @@
+[
+  {
+    "name": "station",
+    "caption": "Current JMA AMeDAS observations for the nearest station, including rain, wind and sunshine",
+    "config": {
+      "location": "{\"lat\":\"34.9\",\"lng\":\"138.925\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Izu\"}"
+    }
+  },
+  {
+    "name": "trends",
+    "caption": "Twelve-hour temperature and rain trends for the Izu station",
+    "config": {
+      "location": "{\"lat\":\"34.9\",\"lng\":\"138.925\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Izu\"}",
+      "el_humidity": "false",
+      "el_extremes": "false",
+      "el_precip": "false",
+      "el_wind": "false",
+      "el_snow": "false",
+      "el_sun": "false",
+      "trend": "both",
+      "trend_hours": "12"
+    }
+  }
+]

@@ -1,0 +1,3 @@
+[
+  {"name":"region-mono","caption":"Tornado nowcast at regional zoom with monochrome label settings","config":{"zoom":"region","palette":"mono","text_size":"large"}}
+]

@@ -1,0 +1,4 @@
+[
+  {"name": "sample", "caption": "Sample alert modelled on the July 2022 Sakurajima eruption: eruption notice, Lv3 card, level map, ranked list and ashfall forecast", "config": {"demo": "true"}},
+  {"name": "protan-large", "caption": "Red-green colour-vision palette, large text, volcanoes within 300 km of Kagoshima only", "config": {"demo": "true", "scope": "radius", "radius": "300", "palette": "protan", "text_size": "large", "location": "{\"lat\":\"31.5966\",\"lng\":\"130.5571\",\"timezone\":\"Asia/Tokyo\",\"locality\":\"Kagoshima\"}"}}
+]

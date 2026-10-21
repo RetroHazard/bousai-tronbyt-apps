@@ -1,0 +1,10 @@
+---
+id: bousai-volcano
+name: Bousai Volcano Alerts
+summary: JMA volcano levels and ash
+desc: Volcanic Alert Levels, near-crater warnings, eruption flash reports and ashfall forecasts from the Japan Meteorological Agency, ranked by severity and distance from you, with a Japan map of volcano markers coloured by level. Shows Nationwide or only volcanoes within a radius of your location, and a calm card when nothing qualifies. To let an eruption notice take over the display, combine Alert only with a minimum level (or a radius) and enable Tronbyt AutoPin; without Alert only the app always renders, so AutoPin would pin it permanently. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_volcano.star
+packageName: bousai_volcano
+recommendedInterval: 5

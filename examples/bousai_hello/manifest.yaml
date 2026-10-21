@@ -1,0 +1,9 @@
+id: bousai-hello
+name: Bousai Hello
+summary: Minimal JMA forecast example
+desc: A minimal example that resolves your location to a JMA forecast area and displays the first daily weather code from JMA's official forecast feed in English. It includes the suite's location and accessibility settings and shows a clear message outside Japan or when the feed is unavailable.
+author: Bousai Apps
+category: weather
+fileName: bousai_hello.star
+packageName: bousai_hello
+recommendedInterval: 15

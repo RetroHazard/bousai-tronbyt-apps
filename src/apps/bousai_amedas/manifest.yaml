@@ -1,0 +1,10 @@
+---
+id: bousai-amedas
+name: Bousai AMeDAS Observations
+summary: Live JMA station observations
+desc: Live AMeDAS observations from the Japan Meteorological Agency, updated every 10 minutes. Shows temperature, humidity, rain over 10 minutes, 1 hour and 24 hours, wind with 16-point direction, gusts, snow depth and sunshine for the nearest station or one you choose, plus a trend chart of the last few hours. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_amedas.star
+packageName: bousai_amedas
+recommendedInterval: 10

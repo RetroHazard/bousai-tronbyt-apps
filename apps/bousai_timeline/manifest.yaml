@@ -1,0 +1,10 @@
+---
+id: bousai-timeline
+name: Bousai Timeline
+summary: Last 72 hours of Japan alerts
+desc: Timeline of the past 24 to 72 hours from the Japan Meteorological Agency, newest first. It shows when weather advisories, warnings and landslide alerts were issued, lowered and lifted for your municipality, with tornado watches, record heavy rain, weather information, earthquakes, tsunami, volcano alert levels and eruptions, and typhoon changes. Day bands read Today, Yesterday or the date, and every event carries a text label as well as a colour. Theme, colour-vision palette, contrast and text size are adjustable.
+author: Bousai Apps
+category: weather
+fileName: bousai_timeline.star
+packageName: bousai_timeline
+recommendedInterval: 5

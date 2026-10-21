@@ -1,0 +1,10 @@
+---
+id: bousai-lightning
+name: Bousai Lightning
+summary: JMA thunder nowcast and strikes
+desc: JMA Thunder Nowcast around your location. Animated lightning activity levels 1 to 4 for the last 30 minutes and the next hour, each frame with a time label, plus LIDEN lightning strikes drawn as squares for cloud-to-ground and crosses for cloud-to-cloud and counted as text with the distance to the nearest one. A text key explains the levels. Map colours come from JMA and cannot be recoloured; theme, colour vision, contrast and text size apply to labels, the key, the location marker and status text. With Only when active the app hides itself while nothing is on the map; enable Tronbyt AutoPin so thunder takes over the display when it appears.
+author: Bousai Apps
+category: weather
+fileName: bousai_lightning.star
+packageName: bousai_lightning
+recommendedInterval: 5

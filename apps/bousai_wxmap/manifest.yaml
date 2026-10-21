@@ -1,0 +1,10 @@
+---
+id: bousai-wxmap
+name: Bousai Weather Map
+summary: JMA 5 km weather forecast map
+desc: JMA weather distribution forecast on a 5 km grid until midnight of the next day. Pick weather, temperature, 3-hour rain or 3-hour snow and watch it step through the forecast around your location, each frame labelled with its weekday and hour and with the forecast weather and temperature written out as text from JMA's regional three-hourly forecast, plus a text colour key. Map colours come from JMA and cannot be recoloured; theme, colour vision, contrast and text size apply to labels, the key, the location marker and status text.
+author: Bousai Apps
+category: weather
+fileName: bousai_wxmap.star
+packageName: bousai_wxmap
+recommendedInterval: 15

@@ -1,0 +1,3 @@
+[
+  {"name":"temperature-light","caption":"Temperature forecast at regional zoom with light, extra-large bold labels","config":{"zoom":"region","element":"temp","theme":"light","text_size":"xlarge","text_weight":"bold"}}
+]

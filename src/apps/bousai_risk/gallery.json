@@ -1,0 +1,3 @@
+[
+  {"name":"wide-landslide","caption":"Landslide risk map at wide zoom with the previous hour of change","config":{"zoom":"wide","element":"land","history":"hour","contrast":"high"}}
+]

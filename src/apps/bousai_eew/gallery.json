@@ -1,0 +1,4 @@
+[
+  {"name":"sample","caption":"Sample EEW warning modelled on the 2024 Noto Peninsula earthquake","config":{"demo":"true"}},
+  {"name":"large-light","caption":"Sample EEW with large bold text in the light theme","config":{"demo":"true","theme":"light","text_size":"large","text_weight":"bold"}}
+]
