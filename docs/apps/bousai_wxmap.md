@@ -1,6 +1,6 @@
 # Bousai Weather Map (`bousai_wxmap`)
 
-Weather Map covers NERV's 5 km weather-distribution forecast. It animates JMA weather, temperature, three-hour rain, or three-hour snow forecasts around the configured location and supplements frames with regional forecast text.
+Weather Map covers NERV's 5 km weather-distribution forecast. It animates JMA weather, temperature, three-hour rain, or three-hour snow forecasts around the configured location. Every frame carries a top bar with a kanji weekday, the time, the regional forecast weather and temperature, and a JMA colour-scale strip along the bottom; the loop is map frames only.
 
 <!-- BEGIN GENERATED: gallery -->
 | ![Temperature forecast at regional zoom with light, extra-large bold labels](../images/bousai_wxmap-temperature-light.webp)<br>*Temperature forecast at regional zoom with light, extra-large bold labels* |
@@ -49,5 +49,7 @@ The location is rounded locally and used for tiles and the first-forecast-area p
 ## Limitations
 
 - The map is a gridded JMA forecast, not a street-level forecast; top-bar weather/temperature text may be unavailable when the regional feed has no matching time or term.
-- JMA tile colours cannot be recoloured, so the bottom strip uses them unchanged. Theme, colour-vision, contrast, text size, and text weight affect the top bar and marker. The strip is a colour cue only and the classes are not written out on the device; the top bar's weather and temperature text is the non-colour cue.
-- Rendering and cache timing add delay, and the 64×32 display limits map and key detail.
+- JMA tile colours cannot be recoloured; the bottom strip interpolates between them, so only the end colours appear exactly and the strip shows the scale rather than an exact match for each class. Theme, colour-vision, contrast, text size, and text weight affect the top bar and marker. The strip is a colour cue only and the classes are not written out on the device; the top bar's weather and temperature text is the non-colour cue.
+- The kanji weekdays are hand-drawn 5×6 bitmaps; 水 and 金 are approximations at that size. At larger text sizes the glyph stays at 6 pixels beside the bigger text.
+- Areas outside JMA's forecast grid (open sea at wider zooms or near the grid edge) are transparent in JMA's tiles and show the plain background.
+- Rendering and cache timing add delay, and the 64×32 display limits map detail.
