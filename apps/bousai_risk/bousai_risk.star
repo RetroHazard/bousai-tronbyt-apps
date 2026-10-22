@@ -1199,6 +1199,61 @@ def bousai_tiles_banner(ui, text, frames = None):
     strip = render.Box(width = canvas.width(), height = h, color = bousai_tiles_backing(ui), child = bousai_fit(ui, text, width = canvas.width() - 2, color = ui["fg"], font = font, align = "center", frames = frames))
     return bousai_place(0, canvas.height() - h, strip)
 
+def bousai_tiles_glyph(rows, color, scale = 1):
+    """A small hand-drawn bitmap (rows of '#' and '.') as a widget, each pixel scaled to scale x scale."""
+    kids = []
+    for y in range(len(rows)):
+        for x in range(len(rows[y])):
+            if rows[y][x] == "#":
+                kids.append(bousai_place(x * scale, y * scale, render.Box(width = scale, height = scale, color = color)))
+    return render.Box(width = len(rows[0]) * scale, height = len(rows) * scale, child = render.Stack(children = kids))
+
+def bousai_tiles_bar(ui, text, right = None, lead = None, frames = None):
+    """Opaque full-width text bar at the top of the map: an optional bitmap glyph (`lead`, rows of '#'/'.', e.g. a
+    kanji weekday), the frame time and note ('21h Cldy'), and an optional value pinned to the right edge ('21C').
+    The glyph and right value always stay put; only the text between them scrolls when it does not fit.
+    The bar is one row taller than the font so a 6-row glyph fits; text sits on the bottom rows.
+    """
+    font = ui["small_font"]
+    h = bousai_font_height(ui, font) + 1
+    w = canvas.width()
+    rw = bousai_text_width(ui, right, font) if right else 0
+    head = []
+    lw = w - 1 - (rw + 1 if right else 0)
+    if lead:
+        scale = max(1, h // len(lead))
+        head = [bousai_tiles_glyph(lead, ui["fg"], scale), render.Box(width = scale, height = 1)]
+        lw -= len(lead[0]) * scale + scale
+    fits = bousai_text_width(ui, text, font) <= lw
+    left = bousai_text(ui, text, ui["fg"], font) if fits else bousai_fit(ui, text, width = lw, color = ui["fg"], font = font, frames = frames)
+    kids = [render.Padding(pad = (1, 0, 0, 0), child = render.Row(cross_align = "end", children = head + [left]))]
+    if right:
+        kids.append(bousai_text(ui, right, ui["fg"], font))
+    line = render.Row(expanded = True, main_align = "space_between", cross_align = "end", children = kids)
+    bar = render.Box(width = w, height = h, color = ui["bg"], child = line)
+    if ui["frame"]:
+        return render.Column(children = [bar, render.Box(width = w, height = 1, color = ui["muted"])])
+    return bar
+
+def bousai_tiles_gradient(colors):
+    """Colour-key footer for the bottom of the map: the tile colours left to right as one smooth gradient, outlined in black.
+
+    The colours sit at evenly spaced stops (first at the left edge, last at the right) and every pixel between two
+    stops is linearly interpolated, so neighbouring classes run into each other without hard steps.
+    """
+    inner = canvas.width() - 2
+    n = len(colors)
+    cols = []
+    for x in range(inner):
+        c = colors[0]
+        if n > 1:
+            p = x * (n - 1) / (inner - 1.0)
+            i = min(n - 2, int(p))
+            c = bousai_mix(colors[i], colors[i + 1], p - i)
+        cols.append(render.Box(width = 1, height = 2, color = c))
+    strip = render.Padding(pad = 1, child = render.Row(children = cols))
+    return bousai_place(0, canvas.height() - 4, render.Box(width = canvas.width(), height = 4, color = "#000000", child = strip))
+
 def bousai_tiles_strike(ui, cg):
     """Lightning discharge glyph: a filled square for cloud-to-ground (CG), a cross for cloud-to-cloud (CC).
 
@@ -1237,9 +1292,13 @@ def bousai_tiles_build(ui, loc, view, opts, frames, spec):
     """Fetch tiles and compose one widget per frame.
 
     frames: dicts from bousai_tiles_frame, optionally with "extra" (widgets drawn above the mask), "note" (bottom
-    text strip) and "quiet" (True: do not claim 'nothing here' even when the tiles are blank).
+    text strip, or after the label in the top bar), "right" (top bar only: text pinned to the bar's right edge),
+    "lead" (top bar only: bitmap glyph rows drawn before the label) and "quiet" (True: do not claim 'nothing here'
+    even when the tiles are blank).
     spec: {"zooms": [tile zooms], "empty": banner text when a frame's tiles are blank (optional),
-           "basemap": True to force the land silhouette (default: only when zoomed out)}.
+           "basemap": True to force the land silhouette (default: only when zoomed out),
+           "bar": True to write label, note and empty text into one opaque top bar instead (optional),
+           "footer": tile colours drawn as a gradient strip along the bottom (optional)}.
     Returns {"widgets": [...], "holds": [extra ticks], "states": ["content"|"blank"|"unknown"], "tile_zoom": z}.
     """
     tile_zoom = bousai_tiles_pick_zoom(view, spec["zooms"])
@@ -1250,6 +1309,7 @@ def bousai_tiles_build(ui, loc, view, opts, frames, spec):
     over = [mask] if mask != None else []
     marker = bousai_tiles_marker(ui, view, loc["lat"], loc["lon"]) if opts["show_location"] else None
     dim = bousai_tiles_data_dim(ui)
+    footer = bousai_tiles_gradient(spec["footer"]) if spec.get("footer") else None
     widgets = []
     holds = []
     states = []
@@ -1265,11 +1325,22 @@ def bousai_tiles_build(ui, loc, view, opts, frames, spec):
         kids.extend(f.get("extra") or [])
         if marker != None:
             kids.append(marker)
-        if f.get("note"):
-            kids.append(bousai_tiles_banner(ui, f["note"]))
-        elif got["state"] == "blank" and spec.get("empty") and not f.get("quiet"):
-            kids.append(bousai_tiles_banner(ui, spec["empty"]))
-        kids.append(bousai_tiles_label(ui, f["label"], f.get("sub")))
+        empty = got["state"] == "blank" and spec.get("empty") and not f.get("quiet")
+        if spec.get("bar"):
+            if footer != None:
+                kids.append(footer)
+            parts = [f["label"]]
+            if f.get("note"):
+                parts.append(f["note"])
+            elif empty:
+                parts.append(spec["empty"])
+            kids.append(bousai_tiles_bar(ui, " ".join(parts), f.get("right"), f.get("lead")))
+        else:
+            if f.get("note"):
+                kids.append(bousai_tiles_banner(ui, f["note"]))
+            elif empty:
+                kids.append(bousai_tiles_banner(ui, spec["empty"]))
+            kids.append(bousai_tiles_label(ui, f["label"], f.get("sub")))
         widgets.append(render.Box(width = view["w"], height = view["h"], color = ui["bg"], child = render.Stack(children = kids)))
         holds.append(f.get("hold") or 0)
         states.append(got["state"])

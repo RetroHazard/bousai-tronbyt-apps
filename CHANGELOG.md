@@ -12,6 +12,11 @@ Initial public-release preparation. No hosted release or version tag has been pu
 - JMA polygon-based municipality matching and optional area-code overrides where applicable.
 - Illustrative sample alerts for apps whose rare active states are otherwise hard to preview.
 - Single-file generated apps for upload or custom-repository installation; per-app ZIP builder.
+- Weather Map: one opaque 6-pixel top bar per frame with a kanji weekday glyph, hour/window and abbreviated
+  forecast weather on the left and the forecast temperature pinned right (`木15h Cldy` … `21C`); a black-outlined,
+  smoothly interpolated JMA-colour gradient strip along the bottom of every map frame; the Forecast-area and
+  colour-key text pages and the **Show colour key** setting are removed, so the loop is map frames only (use the
+  AMeDAS app for observations).
 
 ### Documentation and examples
 
