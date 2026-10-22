@@ -925,6 +925,10 @@ def bousai_typhoon_category_en(cat, intensity_en = ""):
     return base
 
 def bousai_typhoon_dir(jp):
+    """English direction for a JMA direction: a Japanese string ('北西'), or a {"jp", "en"} dict, which JMA uses for
+    the whole-area wind radius ({"jp": "全域", "en": "All"})."""
+    if type(jp) == "dict":
+        return BOUSAI_TYPHOON_DIRS.get(jp.get("jp") or "", jp.get("en") or "")
     return BOUSAI_TYPHOON_DIRS.get(jp or "", "")
 
 def bousai_typhoon_area_km(areas):

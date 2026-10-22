@@ -17,6 +17,8 @@ Initial public-release preparation. No hosted release or version tag has been pu
   smoothly interpolated JMA-colour gradient strip along the bottom of every map frame; the Forecast-area and
   colour-key text pages and the **Show colour key** setting are removed, so the loop is map frames only (use the
   AMeDAS app for observations).
+- Typhoon / Home: no longer crash when JMA gives a wind radius for the whole area (`{"jp": "全域", "en": "All"}`)
+  instead of a direction string.
 
 ### Documentation and examples
 
