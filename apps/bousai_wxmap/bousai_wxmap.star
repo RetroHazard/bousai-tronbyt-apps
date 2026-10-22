@@ -1,7 +1,7 @@
 """
 Applet: Bousai Weather Map
 Summary: JMA 5 km weather forecast map
-Description: JMA weather distribution forecast on a 5 km grid until midnight of the next day: weather, temperature, 3-hour rain or 3-hour snow around your location, every frame labelled and the forecast weather and temperature written out as text.
+Description: JMA weather distribution forecast on a 5 km grid until midnight of the next day: weather, temperature, 3-hour rain or 3-hour snow around your location, every frame topped by one bar with its time and the forecast weather and temperature, and a JMA colour-key strip along the bottom.
 Author: Bousai Apps
 """
 
@@ -1199,6 +1199,61 @@ def bousai_tiles_banner(ui, text, frames = None):
     strip = render.Box(width = canvas.width(), height = h, color = bousai_tiles_backing(ui), child = bousai_fit(ui, text, width = canvas.width() - 2, color = ui["fg"], font = font, align = "center", frames = frames))
     return bousai_place(0, canvas.height() - h, strip)
 
+def bousai_tiles_glyph(rows, color, scale = 1):
+    """A small hand-drawn bitmap (rows of '#' and '.') as a widget, each pixel scaled to scale x scale."""
+    kids = []
+    for y in range(len(rows)):
+        for x in range(len(rows[y])):
+            if rows[y][x] == "#":
+                kids.append(bousai_place(x * scale, y * scale, render.Box(width = scale, height = scale, color = color)))
+    return render.Box(width = len(rows[0]) * scale, height = len(rows) * scale, child = render.Stack(children = kids))
+
+def bousai_tiles_bar(ui, text, right = None, lead = None, frames = None):
+    """Opaque full-width text bar at the top of the map: an optional bitmap glyph (`lead`, rows of '#'/'.', e.g. a
+    kanji weekday), the frame time and note ('21h Cldy'), and an optional value pinned to the right edge ('21C').
+    The glyph and right value always stay put; only the text between them scrolls when it does not fit.
+    The bar is one row taller than the font so a 6-row glyph fits; text sits on the bottom rows.
+    """
+    font = ui["small_font"]
+    h = bousai_font_height(ui, font) + 1
+    w = canvas.width()
+    rw = bousai_text_width(ui, right, font) if right else 0
+    head = []
+    lw = w - 1 - (rw + 1 if right else 0)
+    if lead:
+        scale = max(1, h // len(lead))
+        head = [bousai_tiles_glyph(lead, ui["fg"], scale), render.Box(width = scale, height = 1)]
+        lw -= len(lead[0]) * scale + scale
+    fits = bousai_text_width(ui, text, font) <= lw
+    left = bousai_text(ui, text, ui["fg"], font) if fits else bousai_fit(ui, text, width = lw, color = ui["fg"], font = font, frames = frames)
+    kids = [render.Padding(pad = (1, 0, 0, 0), child = render.Row(cross_align = "end", children = head + [left]))]
+    if right:
+        kids.append(bousai_text(ui, right, ui["fg"], font))
+    line = render.Row(expanded = True, main_align = "space_between", cross_align = "end", children = kids)
+    bar = render.Box(width = w, height = h, color = ui["bg"], child = line)
+    if ui["frame"]:
+        return render.Column(children = [bar, render.Box(width = w, height = 1, color = ui["muted"])])
+    return bar
+
+def bousai_tiles_gradient(colors):
+    """Colour-key footer for the bottom of the map: the tile colours left to right as one smooth gradient, outlined in black.
+
+    The colours sit at evenly spaced stops (first at the left edge, last at the right) and every pixel between two
+    stops is linearly interpolated, so neighbouring classes run into each other without hard steps.
+    """
+    inner = canvas.width() - 2
+    n = len(colors)
+    cols = []
+    for x in range(inner):
+        c = colors[0]
+        if n > 1:
+            p = x * (n - 1) / (inner - 1.0)
+            i = min(n - 2, int(p))
+            c = bousai_mix(colors[i], colors[i + 1], p - i)
+        cols.append(render.Box(width = 1, height = 2, color = c))
+    strip = render.Padding(pad = 1, child = render.Row(children = cols))
+    return bousai_place(0, canvas.height() - 4, render.Box(width = canvas.width(), height = 4, color = "#000000", child = strip))
+
 def bousai_tiles_strike(ui, cg):
     """Lightning discharge glyph: a filled square for cloud-to-ground (CG), a cross for cloud-to-cloud (CC).
 
@@ -1237,9 +1292,13 @@ def bousai_tiles_build(ui, loc, view, opts, frames, spec):
     """Fetch tiles and compose one widget per frame.
 
     frames: dicts from bousai_tiles_frame, optionally with "extra" (widgets drawn above the mask), "note" (bottom
-    text strip) and "quiet" (True: do not claim 'nothing here' even when the tiles are blank).
+    text strip, or after the label in the top bar), "right" (top bar only: text pinned to the bar's right edge),
+    "lead" (top bar only: bitmap glyph rows drawn before the label) and "quiet" (True: do not claim 'nothing here'
+    even when the tiles are blank).
     spec: {"zooms": [tile zooms], "empty": banner text when a frame's tiles are blank (optional),
-           "basemap": True to force the land silhouette (default: only when zoomed out)}.
+           "basemap": True to force the land silhouette (default: only when zoomed out),
+           "bar": True to write label, note and empty text into one opaque top bar instead (optional),
+           "footer": tile colours drawn as a gradient strip along the bottom (optional)}.
     Returns {"widgets": [...], "holds": [extra ticks], "states": ["content"|"blank"|"unknown"], "tile_zoom": z}.
     """
     tile_zoom = bousai_tiles_pick_zoom(view, spec["zooms"])
@@ -1250,6 +1309,7 @@ def bousai_tiles_build(ui, loc, view, opts, frames, spec):
     over = [mask] if mask != None else []
     marker = bousai_tiles_marker(ui, view, loc["lat"], loc["lon"]) if opts["show_location"] else None
     dim = bousai_tiles_data_dim(ui)
+    footer = bousai_tiles_gradient(spec["footer"]) if spec.get("footer") else None
     widgets = []
     holds = []
     states = []
@@ -1265,11 +1325,22 @@ def bousai_tiles_build(ui, loc, view, opts, frames, spec):
         kids.extend(f.get("extra") or [])
         if marker != None:
             kids.append(marker)
-        if f.get("note"):
-            kids.append(bousai_tiles_banner(ui, f["note"]))
-        elif got["state"] == "blank" and spec.get("empty") and not f.get("quiet"):
-            kids.append(bousai_tiles_banner(ui, spec["empty"]))
-        kids.append(bousai_tiles_label(ui, f["label"], f.get("sub")))
+        empty = got["state"] == "blank" and spec.get("empty") and not f.get("quiet")
+        if spec.get("bar"):
+            if footer != None:
+                kids.append(footer)
+            parts = [f["label"]]
+            if f.get("note"):
+                parts.append(f["note"])
+            elif empty:
+                parts.append(spec["empty"])
+            kids.append(bousai_tiles_bar(ui, " ".join(parts), f.get("right"), f.get("lead")))
+        else:
+            if f.get("note"):
+                kids.append(bousai_tiles_banner(ui, f["note"]))
+            elif empty:
+                kids.append(bousai_tiles_banner(ui, spec["empty"]))
+            kids.append(bousai_tiles_label(ui, f["label"], f.get("sub")))
         widgets.append(render.Box(width = view["w"], height = view["h"], color = ui["bg"], child = render.Stack(children = kids)))
         holds.append(f.get("hold") or 0)
         states.append(got["state"])
@@ -1528,10 +1599,10 @@ WX_ELEMENTS = [
     ("s3", "Snow, 3 hours"),
 ]
 
-# JMA weather distribution tile colours (legend of the JMA weather distribution page).
+# JMA weather distribution tile colours in legend order (legend of the JMA weather distribution page), with the class each marks.
 WX_KEYS = {
-    "wm": ("Weather", None, [("#ffaa00", "Clear"), ("#aaaaaa", "Cloudy"), ("#0041ff", "Rain"), ("#a0d2ff", "Rain/snow"), ("#f2f2ff", "Snow")]),
-    "temp": ("Temp", "C", [
+    "wm": [("#ffaa00", "Clear"), ("#aaaaaa", "Cloudy"), ("#0041ff", "Rain"), ("#a0d2ff", "Rain/snow"), ("#f2f2ff", "Snow")],
+    "temp": [
         ("#50002e", "40+"),
         ("#b40068", "35+"),
         ("#ff2800", "30+"),
@@ -1547,13 +1618,24 @@ WX_KEYS = {
         ("#776fa4", "-20+"),
         ("#a8a3c5", "-25+"),
         ("#d8d6e4", "<-25"),
-    ]),
-    "r3": ("Rain", "mm/3h", [("#ff9900", "20+"), ("#faf500", "15-20"), ("#0041ff", "10-15"), ("#218cff", "5-10"), ("#a0d2ff", "1-5")]),
-    "s3": ("Snow", "cm/3h", [("#0041ff", "6+"), ("#218cff", "3-6"), ("#a0d2ff", "1-3")]),
+    ],
+    "r3": [("#ff9900", "20+"), ("#faf500", "15-20"), ("#0041ff", "10-15"), ("#218cff", "5-10"), ("#a0d2ff", "1-5")],
+    "s3": [("#0041ff", "6+"), ("#218cff", "3-6"), ("#a0d2ff", "1-3")],
 }
 
-# The forecast texts JMA's regional three-hourly forecast uses, in English (as in the JMA weather legend).
-WX_WEATHER_EN = {"晴れ": "Clear", "くもり": "Cloudy", "雨": "Rain", "雨または雪": "Rain/snow", "雪": "Snow"}
+# The forecast texts JMA's regional three-hourly forecast uses, abbreviated for the frame bar (JMA weather legend in English).
+WX_WEATHER_EN = {"晴れ": "Clr", "くもり": "Cldy", "雨": "Rain", "雨または雪": "R/S", "雪": "Snow"}
+
+# Kanji weekdays as 5x6 bitmaps for the top bar (Pixlet's small fonts have no CJK glyphs), keyed by Go's "Mon" format.
+WX_WEEKDAY_KANJI = {
+    "Sun": [".####", ".#..#", ".####", ".#..#", ".#..#", ".####"],  # 日
+    "Mon": ["..###", "..#.#", "..###", "..#.#", ".#..#", "#..##"],  # 月
+    "Tue": ["..#..", "#.#.#", "..#..", "..#..", ".#.#.", "#...#"],  # 火
+    "Wed": ["..#..", "###.#", "..##.", "..#..", ".#.#.", "#.#.#"],  # 水
+    "Thu": ["..#..", "#####", "..#..", ".###.", "#.#.#", "..#.."],  # 木
+    "Fri": ["..#..", ".#.#.", "#####", "..#..", "#.#.#", "#####"],  # 金
+    "Sat": ["..#..", "..#..", ".###.", "..#..", "..#..", "#####"],  # 土
+}
 
 def wx_number(v):
     return type(v) == "int" or type(v) == "float"
@@ -1561,13 +1643,13 @@ def wx_number(v):
 def wx_forecast(loc):
     """JMA regional three-hourly forecast (VPFD) for the area of the location, or None.
 
-    Returns {"area": area name, "city": temperature point, "wx": {valid unix: English weather},
-    "temp": {valid unix: degrees C}}. Weather periods are keyed by their end, which is the tile valid time.
+    Returns {"wx": {valid unix: abbreviated English weather}, "temp": {valid unix: degrees C}}. Weather periods
+    are keyed by their end, which is the tile valid time.
     """
     area = bousai_tiles_first_area(loc["lat"], loc["lon"])
     if area == None:
         return None
-    out = {"area": area["name"], "city": "", "wx": {}, "temp": {}}
+    out = {"wx": {}, "temp": {}}
     data = bousai_get_json("%s/wdist/VPFD/%s.json" % (BOUSAI_JMATILE, area["code"]), ttl = 900)
     if type(data) != "dict":
         return out
@@ -1579,7 +1661,6 @@ def wx_forecast(loc):
         if t != None and words[i] in WX_WEATHER_EN:
             out["wx"][t.unix + 10800] = WX_WEATHER_EN[words[i]]
     point = data.get("pointTimeSeries") or {}
-    out["city"] = point.get("pointNameEN") or ""
     stamps = point.get("timeDefines") or []
     values = point.get("temperature") or []
     for i in range(min(len(stamps), len(values))):
@@ -1588,17 +1669,6 @@ def wx_forecast(loc):
             out["temp"][t.unix] = int(values[i])
     return out
 
-def wx_note(fc, u):
-    """'Cloudy 21C' for a frame valid time, from the regional forecast."""
-    if fc == None:
-        return None
-    parts = []
-    if u in fc["wx"]:
-        parts.append(fc["wx"][u])
-    if u in fc["temp"]:
-        parts.append("%dC" % fc["temp"][u])
-    return " ".join(parts) if parts else None
-
 def wx_frames(element, tz, now_u, fc):
     """Forecast frames from the 3-hourly index, from the current period on, up to midnight of the next day."""
     rows = [e for e in bousai_tiles_entries(bousai_jmatile_times("wdist/targetTimes.json", ttl = 600), element) if e["u"] >= now_u - 5400]
@@ -1606,34 +1676,22 @@ def wx_frames(element, tz, now_u, fc):
     for e in rows[:14]:
         local = e["t"].in_location(tz)
         hour = local.hour
-        label = "%s %d-%dh" % (local.format("Mon"), (hour + 21) % 24, hour) if element in ("r3", "s3") else "%s %dh" % (local.format("Mon"), hour)
+        window = element in ("r3", "s3")
+        label = "%d-%dh" % ((hour + 21) % 24, hour) if window else "%dh" % hour
         f = bousai_tiles_frame("wdist", e, element, label, None, bousai_tiles_ttl(e, now_u))
-        f["note"] = wx_note(fc, e["u"])
+        f["lead"] = WX_WEEKDAY_KANJI[local.format("Mon")]
+
+        # The weather period ends at the valid time, so it is exactly the rain/snow window. The point temperature
+        # (an instant: the end of the frame) goes to the right of the bar.
+        if fc != None:
+            f["note"] = fc["wx"].get(e["u"])
+            if e["u"] in fc["temp"]:
+                f["right"] = "%dC" % fc["temp"][e["u"]]
         frames.append(f)
     if len(frames) > 0:
         frames[0]["hold"] = 1
         frames[-1]["hold"] = max(frames[-1]["hold"], 2)
     return frames
-
-def wx_status(ui, loc, fc):
-    """Forecast area and temperature point, plus the nearest AMeDAS temperature now."""
-    rows = []
-    if fc != None:
-        rows.append(("Forecast area", ui["muted"]))
-        rows.append((fc["area"], ui["fg"]))
-        if fc["city"]:
-            rows.append(("Temp: " + fc["city"], ui["muted"]))
-    snap = bousai_tiles_amedas_near(loc["lat"], loc["lon"], 40.0)
-    if snap != None:
-        seen = [s for s in snap["stations"] if s["temp"] != None]
-        if len(seen) > 0:
-            rows.append(("AMeDAS " + bousai_tiles_clock(snap["time"], loc["tz"]), ui["muted"]))
-            rows.append((bousai_tiles_place(seen[0]), ui["muted"]))
-            rows.append(("%sC now" % bousai_fixed(seen[0]["temp"], 1), ui["fg"]))
-    if len(rows) == 0:
-        rows.append(("No text forecast", ui["muted"]))
-        rows.append(("for this area", ui["muted"]))
-    return rows
 
 def main(config):
     ui = bousai_ui(config)
@@ -1648,10 +1706,9 @@ def main(config):
     frames = wx_frames(element, loc["tz"], time.now().unix, fc)
     if len(frames) == 0:
         return bousai_message(ui, "Weather map", ["No forecast map", "from JMA now"])
-    built = bousai_tiles_build(ui, loc, bousai_tiles_view(loc, opts), opts, frames, {"zooms": BOUSAI_TILES_PRODUCT_ZOOMS["wdist"], "empty": "No data"})
-    title, unit, entries = WX_KEYS[element]
-    key = {"title": title, "unit": unit, "entries": entries} if opts["legend"] else None
-    return bousai_tiles_root(ui, opts, built, {"title": "Forecast", "rows": wx_status(ui, loc, fc)}, key)
+    spec = {"zooms": BOUSAI_TILES_PRODUCT_ZOOMS["wdist"], "empty": "No data", "bar": True, "footer": [e[0] for e in WX_KEYS[element]]}
+    built = bousai_tiles_build(ui, loc, bousai_tiles_view(loc, opts), opts, frames, spec)
+    return bousai_tiles_root(ui, opts, built)
 
 def get_schema():
     return bousai_tiles_schema([
@@ -1663,4 +1720,4 @@ def get_schema():
             default = "wm",
             options = [schema.Option(display = e[1], value = e[0]) for e in WX_ELEMENTS],
         ),
-    ], "region")
+    ], "region", legend = False)
